@@ -1,0 +1,42 @@
+class Solution {
+public:
+    bool bfs(int node,vector<vector<int>> &graph,vector<int> &vis)
+    {
+        vis[node]=1;
+        queue<int> q;
+        q.push(node);
+        while(!q.empty())
+        {
+            int currNode=q.front();
+            q.pop();
+            for(int nn:graph[currNode])
+            {
+                if(vis[nn]==-1)
+                {
+                    vis[nn]=!vis[currNode];
+                    q.push(nn);
+                }
+                else if(vis[nn]==vis[currNode])
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    bool isBipartite(vector<vector<int>>& graph) {
+        int N=graph.size();
+        vector<int> vis(N,-1);
+        for(int i=0;i<N;i++)
+        {
+            if(vis[i]==-1)
+            {
+            if(bfs(i,graph,vis)==false)
+            {
+                return false;
+            }
+            }
+        }
+        return true;
+    }
+};

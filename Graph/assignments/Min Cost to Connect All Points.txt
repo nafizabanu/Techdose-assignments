@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int mDis(vector<int>& P, vector<int>& Q){
+        return abs(P[0]-Q[0])+abs(P[1]-Q[1]);
+    }
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        int l=points.size();
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        pq.push({0, 0});
+        vector<bool> visited(l, 0);
+        int ans = 0;
+        int n = 0;
+        while (!pq.empty()) {
+            auto [w, i] = pq.top();
+            pq.pop();
+            if (visited[i]) continue; 
+            visited[i]=1;
+            ans+= w;
+            n++;
+            if (n == l) return ans;
+            for (int j=0; j<l; j++){
+                if (visited[j]) continue;
+                int&& wt=mDis(points[i], points[j]);
+                pq.push({wt, j});
+            }
+        }
+        return -1;
+    }
+};

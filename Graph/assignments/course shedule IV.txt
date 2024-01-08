@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<bool> checkIfPrerequisite(int n, vector<vector<int>>& pre, vector<vector<int>>& q) {
+          vector<vector<int>> path(n,vector<int>(n,1000));
+          for(int i=0;i<n;i++){
+              path[i][i]=0;
+          }
+          for(auto it:pre){
+              path[it[0]][it[1]]=1;
+          }
+          for(int via=0;via<n;via++){
+              for(int i=0;i<n;i++){
+                  for(int j=0;j<n;j++){
+                      path[i][j]=min(path[i][j],path[i][via]+path[via][j]);
+                  }
+              }
+          }
+          vector<bool> ans;
+          for(auto it:q){
+              if(path[it[0]][it[1]]!=1000)
+              ans.push_back(true);
+              else
+              ans.push_back(false);
+          }
+          return ans;
+    }
+};

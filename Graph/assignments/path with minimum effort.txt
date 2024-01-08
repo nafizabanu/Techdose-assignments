@@ -1,0 +1,75 @@
+class Solution {
+
+public:
+
+    bool vis[105][105];
+
+    int dx[4] = {0, 1, -1, 0};  
+
+    int dy[4] = {1, 0, 0, -1};
+
+    int R, C; 
+
+    bool isValid(int r, int c){
+
+        return r>=0&&r<R&&c>=0&&c<C;
+
+    }
+
+    void dfs(int x, int y, int effort, vector<vector<int>>& heights){
+
+        if (vis[x][y]) return;
+
+        vis[x][y] = true;
+
+        if (x == R - 1 && y == C - 1)return ;
+
+        for (int i = 0; i < 4; i++) {
+
+            int currRow = x + dx[i];
+
+            int currCol = y + dy[i];
+
+            if(isValid(currRow,currCol)){
+
+                int currEffort = abs(heights[x][y] - heights[currRow][currCol]);
+
+                if (currEffort <= effort)dfs(currRow, currCol, effort, heights);
+
+            }
+
+        }
+
+    }
+
+    int minimumEffortPath(vector<vector<int>>& heights) {
+
+        R = heights.size(); 
+
+        C = heights[0].size();
+
+        int low = 0, high = 1e6;
+
+        while (low < high) {
+
+            int mid = (high + low) / 2;
+
+            memset(vis, 0, sizeof(vis));
+
+            dfs(0, 0, mid, heights);
+
+            if (vis[R - 1][C - 1])high = mid;
+
+            else low = mid + 1;
+
+        }
+
+        return low;
+
+
+
+    }
+
+
+
+};

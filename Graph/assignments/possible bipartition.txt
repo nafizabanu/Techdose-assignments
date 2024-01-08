@@ -1,0 +1,46 @@
+class Solution {
+public:
+    bool bfs(int node,vector<int> adj[],vector<int> &vis)
+    {
+        vis[node]=1;
+        queue<int> q;
+        q.push(node);
+        while(!q.empty())
+        {
+            int currNode=q.front();
+            q.pop();
+            for(int nn:adj[currNode])
+            {
+                if(vis[nn]==-1)
+                {
+                    vis[nn]=!vis[currNode];
+                    q.push(nn);
+                }
+                else if(vis[nn]==vis[currNode])
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    bool possibleBipartition(int n, vector<vector<int>>& dislikes) {
+        vector<int> vis(n+1,-1);
+        vector<int> adj[n+1];
+        for(auto it:dislikes){
+             adj[it[0]].push_back(it[1]);
+             adj[it[1]].push_back(it[0]);
+        }
+        for(int i=1;i<=n;i++)
+        {
+            if(vis[i]==-1)
+            {
+                if(bfs(i,adj,vis)==false)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};
